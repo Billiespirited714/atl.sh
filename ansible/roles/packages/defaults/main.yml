@@ -58,6 +58,22 @@ languages:
   - yarn
   - pnpm
   - deno
+  - gnat
+  - gfortran
+  - gobjc
+  - gobjc++
+  - fp-compiler
+  - gdc
+  - ldc
+  - ghc
+  - ocaml
+  - nasm
+  - yasm
+  - mono-mcs
+  - scala
+  - racket
+  - gnucobol
+  - valac
 
 # ──────────────────────────────────────────────
 # Editors
