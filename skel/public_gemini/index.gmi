@@ -9,7 +9,7 @@ Write something about yourself here.
 ## Links
 
 => gemini://atl.sh/ atl.sh — All Things Linux pubnix
-=> https://allthingslinux.com All Things Linux
+=> https://allthingslinux.org All Things Linux
 
 ---
 

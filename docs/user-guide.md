@@ -29,8 +29,8 @@ We provide a wide range of tools including:
 
 ### Community
 
-- **IRC**: `#atl` on `irc.tilde.chat` (port 6697, SSL)
-- **Web**: [allthingslinux.com](https://allthingslinux.com)
+- **IRC**: `#support` on `irc.atl.chat` (port 6697, SSL)
+- **Web**: [allthingslinux.org](https://allthingslinux.org)
 
 ### Rules
 

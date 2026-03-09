@@ -30,4 +30,4 @@ Violations may result in:
 
 ## Contact
 
-Report issues to `admin@allthingslinux.com` or on IRC `#atl`.
+Report issues to `admin@allthingslinux.org` or on IRC `#support`.

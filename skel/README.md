@@ -15,12 +15,12 @@ You have a shell account on the All Things Linux community pubnix server.
 - Edit `~/public_html/index.html` to customize your web page
 - Edit `~/public_gemini/index.gmi` to customize your Gemini capsule
 - Edit `~/public_gopher/gophermap` to customize your Gopher menu
-- Join us on IRC: `#atl` on `irc.tilde.chat`
+- Join us on IRC: `#support` on `irc.atl.chat`
 
 ## Getting Help
 
 - Read the docs: `https://atl.sh/docs`
-- Ask on IRC: `#atl`
-- Email admins: `admin@allthingslinux.com`
+- Ask on IRC: `#support`
+- Email admins: `admin@allthingslinux.org`
 
 Have fun exploring! 🐧

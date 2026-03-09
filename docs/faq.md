@@ -6,7 +6,7 @@ atl.sh is a pubnix (public-access Unix server) run by the All Things Linux commu
 
 ## How do I get an account?
 
-Sign up through the [ATL Portal](https://portal.allthingslinux.com). Your shell account is provisioned automatically.
+Sign up through the [ATL Portal](https://portal.allthingslinux.org). Your shell account is provisioned automatically.
 
 ## How do I connect?
 
@@ -28,7 +28,7 @@ Gopher is a classic internet protocol from 1991. Edit `~/public_gopher/gophermap
 
 ## Can I install my own software?
 
-You can install software to `~/.local/` using language package managers (pip, npm, gem, cargo). System packages are managed by admins — suggest additions on IRC.
+You can install software to `~/.local/` using language package managers (pip, npm, gem, cargo). System packages are managed by admins — suggest additions on IRC `#support`.
 
 ## What are the resource limits?
 
