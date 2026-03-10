@@ -4,17 +4,12 @@
 # Prerequisite: ssh-keygen -f .ssh/dev_key -t ed25519 -N "" (creates key pair for root SSH)
 
 Vagrant.configure("2") do |config|
-  config.vm.box = "debian/bookworm64"
+  config.vm.box = "debian/trixie64"
   config.vm.hostname = "atl-sh-dev"
 
-  config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "127.0.0.1", id: "ssh"
 
   config.vm.provider "libvirt" do |v|
-    v.memory = 4096
-    v.cpus = 4
-  end
-
-  config.vm.provider "virtualbox" do |v|
     v.memory = 4096
     v.cpus = 4
   end

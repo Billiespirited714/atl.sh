@@ -42,9 +42,9 @@ create-user username key target:
 remove-user username target:
     cd ansible && ansible-playbook playbooks/remove-user.yml -e "username={{ username }}" -e "target_hosts={{ target }}"
 
-# Development environment (Vagrant VM — requires .ssh/dev_key.pub)
+# Development environment (Vagrant + libvirt; requires .ssh/dev_key.pub)
 dev-up:
-    vagrant up
+    VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 
 dev-down:
     vagrant halt

@@ -45,7 +45,7 @@ This project uses [just](https://github.com/casey/just) for common tasks. Run `j
 ### Prerequisites
 
 - [just](https://github.com/casey/just) — command runner
-- [Vagrant](https://www.vagrantup.com/) + libvirt or VirtualBox (for local dev)
+- [Vagrant](https://www.vagrantup.com/) + [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) (KVM) for local dev — see [Testing Guide](docs/testing.md#setup) for libvirt and Vagrant installation
 - Ansible
 - Terraform 1.8+ (Cloudflare provider v5)
 
@@ -76,7 +76,7 @@ ssh -p 2222 -i .ssh/dev_key root@127.0.0.1
 ```
 
 The development VM:
-- Runs Debian Bookworm with native systemd
+- Runs Debian Trixie with native systemd
 - Uses 4GB RAM, 4 CPUs
 - Skips security hardening (sysctl) and quotas when deploying — test those on staging
 
