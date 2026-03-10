@@ -46,7 +46,8 @@ This project uses [just](https://github.com/casey/just) for common tasks. Run `j
 
 - [just](https://github.com/casey/just) — command runner
 - Docker (for local dev)
-- Ansible, Terraform
+- Ansible
+- Terraform 1.8+ (Cloudflare provider v5)
 
 Install Ansible collections and roles:
 
@@ -85,6 +86,9 @@ The development container:
 ### Infrastructure Provisioning
 
 ```bash
+cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+# Edit terraform.tfvars with Hetzner and Cloudflare credentials
+
 just tf-init
 just tf-apply
 ```
@@ -100,6 +104,15 @@ just deploy prod     # Physical server → atl.sh (set ATL_HOST to override)
 just deploy-tag staging common,packages,users
 ```
 
+### User Management
+
+```bash
+just create-user <username> '<ssh-ed25519 AAAA...>' staging   # or prod
+just remove-user <username> staging
+```
+
+See [Admin Guide](docs/admin-guide.md) for details.
+
 ### Quality Control
 
 ```bash
@@ -109,7 +122,8 @@ just lint
 
 ## Documentation
 
-- [User Guide](docs/user-guide.md)
-- [Admin Guide](docs/admin-guide.md)
-- [Architecture](docs/architecture.md)
+- [User Guide](docs/user-guide.md) — Getting started on atl.sh
+- [Admin Guide](docs/admin-guide.md) — Server administration
+- [FAQ](docs/faq.md)
 - [Testing Guide](docs/testing.md)
+- [Code of Conduct](docs/code-of-conduct.md)
