@@ -7,15 +7,15 @@ This directory contains the Terraform configuration for the All Things Linux `at
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5 |
-| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 4.52 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8 |
+| <a name="requirement_cloudflare"></a> [cloudflare](#requirement\_cloudflare) | ~> 5 |
 | <a name="requirement_hcloud"></a> [hcloud](#requirement\_hcloud) | ~> 1.60 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 4.52.5 |
+| <a name="provider_cloudflare"></a> [cloudflare](#provider\_cloudflare) | 5.18.0 |
 | <a name="provider_hcloud"></a> [hcloud](#provider\_hcloud) | 1.60.1 |
 
 ## Modules
@@ -26,10 +26,12 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [cloudflare_record.pubnix_a](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/record) | resource |
-| [hcloud_firewall.pubnix](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall) | resource |
-| [hcloud_rdns.pubnix_ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/rdns) | resource |
-| [hcloud_server.pubnix](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
+| [cloudflare_dns_record.staging_a](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/dns_record) | resource |
+| [cloudflare_dns_record.staging_aaaa](https://registry.terraform.io/providers/cloudflare/cloudflare/latest/docs/resources/dns_record) | resource |
+| [hcloud_firewall.staging](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/firewall) | resource |
+| [hcloud_rdns.staging_ipv4](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/rdns) | resource |
+| [hcloud_rdns.staging_ipv6](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/rdns) | resource |
+| [hcloud_server.staging](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/server) | resource |
 | [hcloud_ssh_key.admin](https://registry.terraform.io/providers/hetznercloud/hcloud/latest/docs/resources/ssh_key) | resource |
 
 ## Inputs
@@ -52,6 +54,6 @@ No modules.
 |------|-------------|
 | <a name="output_dns_record"></a> [dns\_record](#output\_dns\_record) | DNS record pointing to the VPS |
 | <a name="output_server_id"></a> [server\_id](#output\_server\_id) | Hetzner server ID |
-| <a name="output_server_ip"></a> [server\_ip](#output\_server\_ip) | IPv4 address of the pubnix test VPS |
+| <a name="output_server_ip"></a> [server\_ip](#output\_server\_ip) | IPv4 address of the staging VPS |
 | <a name="output_server_status"></a> [server\_status](#output\_server\_status) | Server status |
 <!-- END_TF_DOCS -->
