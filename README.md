@@ -45,7 +45,7 @@ This project uses [just](https://github.com/casey/just) for common tasks. Run `j
 ### Prerequisites
 
 - [just](https://github.com/casey/just) — command runner
-- Docker (for local dev)
+- [Vagrant](https://www.vagrantup.com/) + libvirt or VirtualBox (for local dev)
 - Ansible
 - Terraform 1.8+ (Cloudflare provider v5)
 
@@ -59,27 +59,26 @@ just install
 
 | Target   | Host     | Description                    |
 |----------|----------|--------------------------------|
-| `dev`    | dev      | Local Docker container         |
+| `dev`    | dev      | Local Vagrant VM               |
 | `staging`| staging  | Terraform Hetzner Cloud VPS    |
 | `prod`   | prod     | Physical Hetzner server        |
 
 ### Local Development Environment
 
-A Docker-based development environment for testing Ansible playbooks locally:
+A Vagrant VM for testing Ansible playbooks locally. Requires `.ssh/dev_key` and `.ssh/dev_key.pub` (create with `ssh-keygen -f .ssh/dev_key -t ed25519 -N ""`).
 
 ```bash
 just dev-up
 just deploy dev
 
-# SSH into dev container
-ssh -p 2222 -i .ssh/dev_key root@localhost
+# SSH into dev VM
+ssh -p 2222 -i .ssh/dev_key root@127.0.0.1
 ```
 
-The development container:
-- Runs Debian Trixie with systemd
-- Uses safe resource limits (4GB RAM, 4 CPUs, 2048 PIDs)
-- Mounts Ansible playbooks read-only for testing
-- Skips security hardening (sysctl) and quotas (not supported in containers)
+The development VM:
+- Runs Debian Bookworm with native systemd
+- Uses 4GB RAM, 4 CPUs
+- Skips security hardening (sysctl) and quotas when deploying — test those on staging
 
 ## Deployment
 
@@ -96,7 +95,7 @@ just tf-apply
 ### Configuration Management
 
 ```bash
-just deploy dev      # Local Docker
+just deploy dev      # Local Vagrant VM
 just deploy staging  # Hetzner VPS → staging.atl.sh (set ATL_HOST to override)
 just deploy prod     # Physical server → atl.sh (set ATL_HOST to override)
 

@@ -19,6 +19,7 @@ references
 # Dev environment
 .ssh/dev_key
 .ssh/dev_key.pub
+.vagrant
 
 # OS
 .DS_Store

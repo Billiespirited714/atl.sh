@@ -18,7 +18,7 @@ tf-plan:
 tf-apply:
     cd terraform && terraform apply
 
-# Deploy: dev (Docker), staging (Hetzner VPS), prod (physical)
+# Deploy: dev (Vagrant VM), staging (Hetzner VPS), prod (physical)
 deploy target:
     #!/usr/bin/env bash
     if [ "{{ target }}" = "dev" ]; then
@@ -42,12 +42,12 @@ create-user username key target:
 remove-user username target:
     cd ansible && ansible-playbook playbooks/remove-user.yml -e "username={{ username }}" -e "target_hosts={{ target }}"
 
-# Development environment
+# Development environment (Vagrant VM — requires .ssh/dev_key.pub)
 dev-up:
-    docker compose up -d
+    vagrant up
 
 dev-down:
-    docker compose down
+    vagrant halt
 
 # Quality
 lint:
