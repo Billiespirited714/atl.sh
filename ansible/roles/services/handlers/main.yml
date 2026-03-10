@@ -16,5 +16,5 @@
 
 - name: Restart gophernicus
   ansible.builtin.systemd:
-    name: gophernicus
+    name: gophernicus.socket
     state: restarted

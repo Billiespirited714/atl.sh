@@ -28,7 +28,7 @@
     src: user-slice-limits.conf.j2
     dest: /etc/systemd/system/user-.slice.d/limits.conf
     mode: "0644"
-  notify: reload systemd
+  notify: Reload systemd
 
 - name: Remove default MOTD
   ansible.builtin.file:

@@ -14,8 +14,6 @@
   ansible.builtin.file:
     path: /var/log/molly-brown
     state: directory
-    owner: molly-brown
-    group: molly-brown
     mode: '0755'
 
 - name: Check if SSL certs exist
