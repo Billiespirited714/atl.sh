@@ -20,8 +20,10 @@ atl.sh is a shared system providing shell access, web hosting, and alternative p
 | Configuration | Ansible |
 | Infrastructure | Terraform (Hetzner, Cloudflare) |
 | Web Server | Nginx |
-| Gemini / Gopher | gmid, Gophernicus |
+| Gemini / Gopher | molly-brown, Gophernicus |
+| FTP | vsftpd |
 | Backups | Borgmatic |
+| Monitoring | prometheus-node-exporter, smartmontools |
 | Logging | logrotate, journald |
 | Security | UFW, Fail2ban, Auditd, user slices |
 
@@ -36,24 +38,61 @@ The system implements multiple layers of protection to ensure stability for all 
 - **Network**: SSH is rate-limited and protected by Fail2ban with strong cryptographic ciphers.
 - **Monitoring**: AIDE file integrity monitoring, enhanced auditd logging, and automatic security updates.
 
-## Deployment
+## Development
+
+### Local Development Environment
+
+A Docker-based development environment is provided for testing Ansible playbooks locally:
+
+```bash
+# Start development container
+docker compose up -d
+
+# Run Ansible playbook against dev container
+cd ansible
+ansible-playbook -i inventory/dev.ini site.yml --skip-tags security,env
+
+# SSH into dev container
+ssh -p 2222 -i .ssh/dev_key root@localhost
+```
+
+The development container:
+- Runs Debian Trixie with systemd
+- Uses safe resource limits (4GB RAM, 4 CPUs, 2048 PIDs)
+- Mounts Ansible playbooks read-only for testing
+- Skips security hardening (sysctl) and quotas (not supported in containers)
 
 ### Prerequisites
+
 Install necessary Ansible collections:
 ```bash
 ansible-galaxy install -r requirements.yml
 ```
 
-### Infrastructure and Configuration
-```bash
-# Provision infrastructure
-cd terraform && terraform init && terraform apply
+## Deployment
 
-# Apply configuration
-cd ../ansible && ansible-playbook site.yml
+### Infrastructure Provisioning
+
+```bash
+cd terraform
+terraform init
+terraform apply
+```
+
+### Configuration Management
+
+```bash
+cd ansible
+
+# Full deployment
+ansible-playbook site.yml
+
+# Specific roles
+ansible-playbook site.yml --tags common,packages,users
 ```
 
 ### Quality Control
+
 Pre-commit hooks are used to maintain code quality:
 ```bash
 pre-commit install
