@@ -1,6 +1,4 @@
 ---
-- name: Ensure fail2ban is enabled and started
-  ansible.builtin.systemd:
-    name: fail2ban
-    enabled: true
-    state: started
+- name: Apply robertdebock.fail2ban role
+  ansible.builtin.include_role:
+    name: robertdebock.fail2ban
