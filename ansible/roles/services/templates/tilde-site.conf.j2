@@ -9,11 +9,6 @@ server {
     root /var/www/html;
     index index.html index.htm;
 
-    # Security Headers
-    add_header X-Frame-Options "{{ nginx_add_header_x_frame_options }}";
-    add_header X-Content-Type-Options "{{ nginx_add_header_x_content_type_options }}";
-    add_header X-XSS-Protection "{{ nginx_add_header_x_xss_protection }}";
-
     # Tilde URLs: /~username → /home/username/public_html
     location ~ ^/~(.+?)(/.*)?$ {
         alias /home/$1/{{ tilde_docroot }}$2;

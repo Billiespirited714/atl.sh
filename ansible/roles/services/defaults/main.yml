@@ -1,13 +1,18 @@
 ---
 nginx_worker_processes: auto
 nginx_server_tokens: "off"
-nginx_gzip: "on"
-tilde_docroot: public_html
+nginx_client_max_body_size: "64m"
 
-# Security headers
-nginx_add_header_x_frame_options: "SAMEORIGIN"
-nginx_add_header_x_content_type_options: "nosniff"
-nginx_add_header_x_xss_protection: "1; mode=block"
+# Global HTTP options for geerlingguy.nginx
+nginx_extra_http_options: |
+  add_header X-Frame-Options "SAMEORIGIN";
+  add_header X-Content-Type-Options "nosniff";
+  add_header X-XSS-Protection "1; mode=block";
+  gzip on;
+  gzip_proxied any;
+  gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+tilde_docroot: public_html
 
 
 gemini_port: 1965
