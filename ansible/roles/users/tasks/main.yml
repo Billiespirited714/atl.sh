@@ -85,3 +85,11 @@
     insertafter: "session\\s+required\\s+pam_env\\.so"
     line: "session required pam_namespace.so"
     state: present
+
+- name: Deploy per-user logrotate cron job
+  ansible.builtin.template:
+    src: user-logrotate.sh.j2
+    dest: /etc/cron.daily/user-logrotate
+    mode: "0755"
+    owner: root
+    group: root
