@@ -1,49 +1,30 @@
 ---
-- name: Install nginx, fcgiwrap, and certbot
+- name: Apply geerlingguy.nginx role
+  ansible.builtin.include_role:
+    name: geerlingguy.nginx
+  vars:
+    nginx_remove_default_vhost: true
+
+- name: Install fcgiwrap and certbot accessories
   ansible.builtin.apt:
     name:
-      - nginx
       - fcgiwrap
       - certbot
       - python3-certbot-nginx
     state: present
 
-- name: Deploy nginx main config
-  ansible.builtin.template:
-    src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
-    mode: "0644"
-    validate: "nginx -t -c %s"
-  notify: reload nginx
-
 - name: Deploy tilde site config
   ansible.builtin.template:
     src: tilde-site.conf.j2
-    dest: /etc/nginx/sites-available/tilde.conf
+    dest: /etc/nginx/conf.d/tilde.conf
     mode: "0644"
-  notify: reload nginx
+  notify: Reload nginx
 
-- name: Enable tilde site
-  ansible.builtin.file:
-    src: /etc/nginx/sites-available/tilde.conf
-    dest: /etc/nginx/sites-enabled/tilde.conf
-    state: link
-  notify: reload nginx
-
-- name: Remove default site
-  ansible.builtin.file:
-    path: /etc/nginx/sites-enabled/default
-    state: absent
-  notify: reload nginx
-
-- name: Enable nginx and fcgiwrap
+- name: Enable fcgiwrap
   ansible.builtin.service:
-    name: "{{ item }}"
+    name: fcgiwrap
     enabled: true
     state: started
-  loop:
-    - nginx
-    - fcgiwrap
 
 - name: Obtain SSL certificate
   ansible.builtin.command:
