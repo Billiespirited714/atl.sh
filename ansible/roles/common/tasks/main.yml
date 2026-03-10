@@ -11,16 +11,9 @@
     name: "{{ common_packages }}"
     state: present
 
-- name: Set timezone
-  community.general.timezone:
-    name: "{{ timezone }}"
-
-- name: Configure NTP servers
-  ansible.builtin.template:
-    src: chrony.conf.j2
-    dest: /etc/chrony/chrony.conf
-    mode: "0644"
-  notify: restart chrony
+- name: Apply geerlingguy.ntp role
+  ansible.builtin.include_role:
+    name: geerlingguy.ntp
 
 - name: Deploy sysctl hardening
   ansible.builtin.template:
