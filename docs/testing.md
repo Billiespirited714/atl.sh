@@ -93,7 +93,7 @@ ssh -i .ssh/dev_key -p 2222 -o StrictHostKeyChecking=no root@127.0.0.1
 just deploy dev
 
 # Or with check mode (dry run):
-cd ansible && ansible-playbook site.yml -l dev --check --skip-tags security,env
+cd ansible && ansible-playbook site.yml -l dev --check
 
 # 5. Tear down when done
 just dev-down
@@ -113,6 +113,11 @@ The `debian/trixie64` box supports only **libvirt** (KVM). If Vagrant picks Virt
 
 ## Troubleshooting
 
+- **Provider mismatch / wrong VM state**: If you previously used VirtualBox or have stale state, remove `.vagrant` and re-run `just dev-up`:
+  ```bash
+  rm -rf .vagrant
+  just dev-up
+  ```
 - **Plugin errors**: If Vagrant fails to initialize, try `vagrant plugin repair` or `vagrant plugin expunge --reinstall`
 - **Provider not found**: Install `vagrant-libvirt` (Arch: `pacman -S vagrant libvirt`)
 - **Port 2222 in use**: Change the host port in the Vagrantfile and update `ansible_port` in `ansible/inventory/hosts.yml`
@@ -139,5 +144,5 @@ The `debian/trixie64` box supports only **libvirt** (KVM). If Vagrant picks Virt
 - SSH key authentication using `.ssh/dev_key` (not committed to git)
 - SSH available on `127.0.0.1:2222`
 - VM uses Debian 13 (Trixie) to match production
-- Dev target skips `security` and `env` tags (sysctl, quotas) — test those on staging
+- Dev target runs full playbook including security and quotas
 - Native systemd — all Ansible tasks run as they would on staging/prod
