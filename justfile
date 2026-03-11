@@ -5,9 +5,18 @@
 default:
     @just --list
 
-# Install Ansible collections and roles
+# Install Ansible collections and roles (separate commands per Ansible docs)
+# Roles: .ansible/roles/; Collections: .ansible/collections/ansible_collections/
+# Paths use justfile_directory() so install location is correct regardless of cwd
+
+[private]
+_ansible := justfile_directory() + "/.ansible"
+[private]
+_ansible_dir := justfile_directory() + "/ansible"
+
 install:
-    ansible-galaxy install -r ansible/requirements.yml -p .ansible --force
+    cd {{ _ansible_dir }} && ansible-galaxy role install -r requirements.yml -p {{ _ansible }}/roles --force
+    cd {{ _ansible_dir }} && ansible-galaxy collection install -r requirements.yml -p {{ _ansible }}/collections --force
 
 # Terraform — initialize backend and providers
 tf-init:
@@ -23,21 +32,11 @@ tf-apply:
 
 # Deploy: dev (Vagrant VM), staging (Hetzner VPS), prod (physical)
 deploy target:
-    #!/usr/bin/env bash
-    if [ "{{ target }}" = "dev" ]; then
-        cd ansible && ansible-playbook site.yml -l dev --skip-tags security,env
-    else
-        cd ansible && ansible-playbook site.yml -l "{{ target }}"
-    fi
+    cd ansible && ansible-playbook site.yml -l "{{ target }}"
 
 # Deploy specific roles by tag (e.g. common,packages,users)
 deploy-tag target tag:
-    #!/usr/bin/env bash
-    if [ "{{ target }}" = "dev" ]; then
-        cd ansible && ansible-playbook site.yml -l dev --tags "{{ tag }}" --skip-tags security,env
-    else
-        cd ansible && ansible-playbook site.yml -l "{{ target }}" --tags "{{ tag }}"
-    fi
+    cd ansible && ansible-playbook site.yml -l "{{ target }}" --tags "{{ tag }}"
 
 # Create pubnix user account (target: staging or prod)
 create-user username key target:
@@ -47,8 +46,19 @@ create-user username key target:
 remove-user username target:
     cd ansible && ansible-playbook playbooks/remove-user.yml -e "username={{ username }}" -e "target_hosts={{ target }}"
 
+# Verify dev prerequisites (.ssh/dev_key, .ssh/dev_key.pub) before dev-up
+dev-check:
+    #!/usr/bin/env bash
+    if [ ! -f .ssh/dev_key ] || [ ! -f .ssh/dev_key.pub ]; then
+        echo "Missing .ssh/dev_key or .ssh/dev_key.pub"
+        echo "Create with: mkdir -p .ssh && ssh-keygen -f .ssh/dev_key -t ed25519 -N \"\""
+        exit 1
+    fi
+    echo "Dev prerequisites OK"
+
 # Development environment (Vagrant + libvirt; requires .ssh/dev_key.pub)
 dev-up:
+    just dev-check
     VAGRANT_DEFAULT_PROVIDER=libvirt vagrant up
 
 # Halt dev VM
