@@ -21,6 +21,13 @@ references
 .ssh/dev_key.pub
 .vagrant
 
+# Site (fumadocs)
+site/node_modules/
+site/.next/
+site/.source/
+site/.open-next/
+site/.wrangler/
+
 # OS
 .DS_Store
 *.swp
