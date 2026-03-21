@@ -1,0 +1,163 @@
+---
+title: User Guide
+description: Everything you need to know to get started on atl.sh.
+---
+
+## Getting Started
+
+Welcome to atl.sh! You have a shell account on the All Things Linux community pubnix server.
+
+### Connecting
+
+- **SSH**: `ssh your-username@atl.sh` (port 22 or 2222 if 22 is blocked)
+- **FTP/S**: Use an FTP client (like FileZilla) with **Explicit FTP over TLS** on port 21.
+- **SFTP**: `sftp your-username@atl.sh` (uses your SSH key, no separate password)
+
+### Your Directories
+
+| Directory          | Purpose                | Public URL                          |
+|--------------------|------------------------|-------------------------------------|
+| `~/public_html/`   | Personal web page      | `https://atl.sh/~your-username`     |
+| `~/public_gemini/` | Gemini capsule         | `gemini://atl.sh/~your-username`    |
+| `~/public_gopher/` | Gopher hole            | `gopher://atl.sh/~your-username`    |
+| `~/public_html/`   | FTP/S root             | `ftp://atl.sh` (port 21, forced TLS) |
+| `~/.plan`          | Finger profile         | `finger your-username@atl.sh`       |
+
+### Available Tools
+
+We provide a wide range of tools including:
+
+- **Shells**: bash, zsh, fish, mksh
+- **Editors**: vim, neovim, nano, emacs, micro, joe
+- **Languages**: Python, Node.js, Ruby, Go, Rust, C/C++, Haskell, Elixir, and many more
+- **Utilities**: tmux, git, htop, btop, ripgrep, fzf, jq, and more
+
+## Finger
+
+The finger protocol is one of the oldest social features on Unix — predating the web by two decades. It lets anyone look up what you're working on right now.
+
+```bash
+# Look up someone on atl.sh
+finger username@atl.sh
+
+# List all users currently logged in
+finger @atl.sh
+```
+
+Your finger profile is built from two plain text files in your home directory:
+
+- **`~/.plan`** — What you're working on, thinking about, or planning. Updated whenever you like. The original microblog.
+- **`~/.project`** — A one-line description of your current project.
+
+Both files are created automatically with placeholder text when your account is made. Edit them with any text editor:
+
+```bash
+nano ~/.plan
+```
+
+### Custom finger output
+
+For full control over your finger output, create an executable `~/.efingerd` script. When present, efingerd runs it instead of reading your `.plan` and `.project` files directly. The script receives two arguments: `$1` is the username being queried and `$2` is the requesting host.
+
+```bash
+#!/bin/bash
+# ~/.efingerd — custom finger output
+echo "Login: $1"
+echo "Last seen: $(last -1 $1 | head -1 | awk '{print $4, $5, $6, $7}')"
+echo ""
+cat ~/.plan
+```
+
+Make it executable: `chmod +x ~/.efingerd`
+
+## Talking to Other Users
+
+Since everyone's on the same server, you can communicate directly with other logged-in users without IRC.
+
+```bash
+# See who's currently logged in
+w
+who
+
+# Send a message to everyone logged in
+wall "anyone want to play nethack?"
+
+# Send a message directly to one user (they must have mesg y)
+write username
+
+# Real-time two-way chat with another user
+talk username
+```
+
+`write` opens a one-way message session — type your message, press Ctrl+D to send. `talk` opens a split-screen two-way chat.
+
+Your account is set up with `mesg y` by default so other users can reach you. To opt out:
+
+```bash
+mesg n   # disable incoming messages
+mesg y   # re-enable
+mesg     # check current status
+```
+
+## Games
+
+### Nethack
+
+The classic roguelike — and a rite of passage on any pubnix. All games write to a shared high score table, so your victories (and your deaths on level 1 to a newt) are visible to everyone.
+
+```bash
+nethack
+```
+
+The server provides a site-wide config with sensible defaults (color, time display, experience). Add a `~/.nethackrc` to override or extend it:
+
+```
+OPTIONS=autopickup
+OPTIONS=name:YourName
+```
+
+View the current high scores without starting a game:
+
+```bash
+nethack -s
+```
+
+### Botany
+
+A virtual plant that lives in your terminal. Water it once a day or it slowly dies. When you'll be away, neighbors on the server can water it for you — which is exactly the kind of social mechanic that makes a pubnix feel alive.
+
+```bash
+botany
+```
+
+On first run, botany creates your plant and a `~/.botany/` directory to store its state. To let neighbors water your plant, `~/.botany/visitors.json` must be world-writable — botany creates it that way by default, so don't change its permissions.
+
+Neighbor watering is done from inside the game via the visit menu. Enter a neighbor's username and botany will show their plant and let you water it.
+
+### Other games
+
+- **Roguelikes**: `angband`, `crawl` (Dungeon Crawl Stone Soup), `slashem` (NetHack variant)
+- **Arcade**: `ninvaders`, `moon-buggy`, `nsnake`, `bastet`, `netris`, `vitetris`
+- **Puzzle**: `nudoku` (sudoku), `typespeed`, `dopewars`
+- **BSD Games**: `bsdgames` — ~40 classic games including `hunt`, `adventure`, `backgammon`, `trek`, and more
+- **Novelty**: `asciiquarium`, `cmatrix`, `sl`, `cowsay`, `fortune`, `figlet`, `lolcat`
+
+## Log Management
+
+We provide a standardized way for you to manage logs from your own processes (like CGI scripts or cron jobs):
+
+- **Private Logs**: Store your log files in `~/.local/state/log`.
+- **Auto-Rotation**: We provide a `.logrotate.conf` template in your home directory. If you configure it, the system will automatically rotate your logs daily to help you stay within your quota.
+
+## Community
+
+- **IRC**: `#support` on `irc.atl.chat` (port 6697, SSL)
+- **Web**: [allthingslinux.org](https://allthingslinux.org)
+
+## Rules
+
+- Be respectful and follow the [Code of Conduct](/code-of-conduct)
+- No cryptocurrency mining
+- No network abuse (scanning, DoS, spam)
+- No illegal content
+- Share and learn — that's what we're here for!
