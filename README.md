@@ -8,10 +8,10 @@
 
 | For users | For admins |
 |-----------|------------|
-| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](docs/admin-guide.md) |
-| [User Guide](docs/user-guide.md) | [Operations](docs/operations.md) |
-| [FAQ](docs/faq.md) | [Testing Guide](docs/testing.md) |
-| [Documentation site](https://docs.atl.sh) | [Code of Conduct](docs/code-of-conduct.md) |
+| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](https://docs.atl.sh/docs/admin-guide) |
+| [User Guide](https://docs.atl.sh/docs/user-guide) | [Operations](https://docs.atl.sh/docs/operations) |
+| [FAQ](https://docs.atl.sh/docs/faq) | [Testing Guide](https://docs.atl.sh/docs/testing) |
+| [Documentation](https://docs.atl.sh) | [Code of Conduct](https://docs.atl.sh/docs/code-of-conduct) |
 
 ---
 
@@ -162,8 +162,6 @@ just syntax-check  # ansible playbook syntax check only
 ## Documentation
 
 Full documentation is at **[docs.atl.sh](https://docs.atl.sh)**, built with Fumadocs and deployed to Cloudflare Workers from the `site/` directory.
-
-Source docs also live in `docs/` as plain Markdown for quick reference.
 
 ---
 
