@@ -8,10 +8,10 @@
 
 | For users | For admins |
 |-----------|------------|
-| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](https://docs.atl.sh/docs/admin-guide) |
-| [User Guide](https://docs.atl.sh/docs/user-guide) | [Operations](https://docs.atl.sh/docs/operations) |
-| [FAQ](https://docs.atl.sh/docs/faq) | [Testing Guide](https://docs.atl.sh/docs/testing) |
-| [Documentation](https://docs.atl.sh) | [Code of Conduct](https://docs.atl.sh/docs/code-of-conduct) |
+| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](https://docs.atl.sh/admin-guide) |
+| [User Guide](https://docs.atl.sh/user-guide) | [Operations](https://docs.atl.sh/operations) |
+| [FAQ](https://docs.atl.sh/faq) | [Testing Guide](https://docs.atl.sh/testing) |
+| [Documentation](https://docs.atl.sh) | [Code of Conduct](https://docs.atl.sh/code-of-conduct) |
 
 ---
 
