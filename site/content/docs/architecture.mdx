@@ -1,0 +1,212 @@
+---
+title: Architecture
+description: Infrastructure, networking, and system design for atl.sh.
+---
+
+This page describes how atl.sh is built: the infrastructure layer, the
+configuration layer managed by Ansible, and the services that run on the server.
+
+## Infrastructure
+
+atl.sh runs on a physical dedicated server hosted by
+[Hetzner](https://www.hetzner.com/), with DNS managed through Cloudflare.
+The production server is managed manually (bare-metal, not provisioned by
+Terraform). Terraform provisions only the staging environment.
+
+| Component    | Provider / Technology               |
+|--------------|-------------------------------------|
+| Server       | Hetzner dedicated (physical, manual)|
+| Staging      | Hetzner Cloud VPS (Terraform)       |
+| DNS          | Cloudflare (Terraform)              |
+| OS           | Debian 13 (Trixie)                  |
+| Config mgmt  | Ansible                             |
+
+### Terraform
+
+Terraform manages the staging VPS and Cloudflare DNS records. Production
+infrastructure is bare-metal and not managed by Terraform.
+
+Terraform state is stored in `terraform/terraform.tfstate` (not committed).
+Variables live in `terraform/terraform.tfvars` (also not committed — copy from
+`terraform.tfvars.example`).
+
+```bash
+just tf-init    # initialize backend and download providers
+just tf-plan    # preview changes before applying
+just tf-apply   # provision or update staging infrastructure
+```
+
+The Terraform configuration provisions:
+
+- Hetzner Cloud VPS for staging
+- Cloudflare DNS records (`atl.sh`, `staging.atl.sh`, and subdomains)
+
+## Ansible Structure
+
+Configuration management is split into five roles applied by `ansible/site.yml`.
+Each role has a focused responsibility and corresponding `--tags` value for
+selective runs.
+
+```
+ansible/
+├── site.yml                   # main playbook
+├── inventory/
+│   ├── hosts.yml              # dev / staging / prod host groups
+│   └── group_vars/
+│       └── all/
+│           ├── main.yml       # shared variables
+│           └── vault.yml      # encrypted secrets (Ansible Vault)
+├── playbooks/
+│   ├── create-user.yml        # onboard a new pubnix user
+│   └── remove-user.yml        # offboard a user
+└── roles/
+    ├── base/                  # OS baseline + all user packages
+    ├── infra/                 # security hardening + monitoring + backups
+    ├── users/                 # skel, MOTD, PAM limits
+    ├── environment/           # cgroup limits, quotas, tmpfs, PATH
+    └── services/              # nginx, Gemini, Gopher, finger, FTP, games, webring
+```
+
+### Role: base
+
+Handles everything needed before any services run:
+
+- Apt cache update and base system packages
+- NTP time synchronization (pool.ntp.org, UTC timezone)
+- All user-facing packages: shells (`zsh`, `fish`, `mksh`), compilers,
+  language runtimes (Python, Node.js, Go, Rust, Ruby, Java, Elixir, and 20+
+  more), editors, terminal multiplexers, CLI tools, games
+- Shared package caches for `pnpm`, `poetry`, and `uv` at `/var/cache/`
+- `/etc/shells` registration for available shells
+
+### Role: infra
+
+Security hardening and operational tooling, split into three internal task
+files:
+
+**`tasks/security/`** — 13 task files covering:
+
+- CIS kernel parameter hardening via `sysctl` (ASLR, ptrace restrictions,
+  network protections)
+- Kernel module blacklisting (uncommon filesystems, protocols)
+- Password and sudo policy
+- SSH configuration (key-only auth, ports 22 + 2222, `AllowGroups pubnix`)
+- UFW firewall (allowlist — only required ports open)
+- Fail2ban (5 failures in 10 minutes → 1-hour ban)
+- Auditd with 40+ rules (identity files, privilege escalation, LOLBins,
+  MITRE ATT&CK-tagged syscall rules)
+- journald hardening (1 GB cap, forward to syslog disabled)
+- AIDE file integrity monitoring (daily check at 05:00 UTC)
+- Automatic security updates via `unattended-upgrades`
+- Malware scanning (`rkhunter`, `chkrootkit`, `lynis`)
+
+**`tasks/monitoring.yml`** — Prometheus Node Exporter:
+
+- Runs on `127.0.0.1:9100` (not exposed publicly)
+- `smartd` for disk S.M.A.R.T. health
+- `lm-sensors` for temperature and fan readings
+
+**`tasks/backup.yml`** — Borgmatic (BorgBackup):
+
+- Backs up `/home`, `/etc`, `/var/spool/cron`
+- Retention: 7 daily, 4 weekly, 6 monthly
+- Runs on a systemd timer
+
+### Role: users
+
+Populates the shared user environment:
+
+- `/etc/skel/` — scaffold copied to every new user's home on account creation
+- MOTD — welcome message shown on SSH login
+- PAM resource limits — per-user caps enforced via `/etc/security/limits.conf`
+
+### Role: environment
+
+Per-user resource isolation and environment setup:
+
+- **Cgroup v2 user slices** — systemd enforces 1.5 GB RAM, 200% CPU, 200
+  process limits per user session
+- **Disk quotas** — 5 GB soft / 6 GB hard per user (XFS or ext4 quota)
+- **Private `/tmp`** — `pam_namespace` polyinstantiation gives each session
+  an isolated tmpdir
+- **XDG directories** — `XDG_CONFIG_HOME`, `XDG_CACHE_HOME`, `XDG_DATA_HOME`,
+  `XDG_STATE_HOME` all set via `/etc/profile.d/`
+- **PATH additions** — `~/.local/bin`, `~/.cargo/bin`, `~/.go/bin`,
+  `~/.local/share/gem/bin`, `~/.deno/bin`, and others added at login
+
+### Role: services
+
+All public-facing services and community features:
+
+| Task file      | Service                                              |
+|----------------|------------------------------------------------------|
+| `web.yml`      | Nginx + fcgiwrap for tilde sites and CGI             |
+| `gemini.yml`   | molly-brown Gemini server                            |
+| `gopher.yml`   | Gophernicus Gopher server                            |
+| `finger.yml`   | efingerd (systemd socket-activated)                  |
+| `ftp.yml`      | vsftpd (Explicit FTP over TLS, passive 40000–40100)  |
+| `games.yml`    | NetHack, Botany, Angband, Crawl, arcade games        |
+| `webring.yml`  | Self-managing member ring with nginx auto-injection  |
+
+## Network
+
+### Open Ports
+
+| Port(s)       | Protocol | Service                         |
+|---------------|----------|---------------------------------|
+| 22, 2222      | TCP      | SSH                             |
+| 70            | TCP      | Gopher                          |
+| 79            | TCP      | Finger                          |
+| 80            | TCP      | HTTP (nginx)                    |
+| 443           | TCP      | HTTPS (nginx + Cloudflare)      |
+| 1965          | TCP      | Gemini                          |
+| 21            | TCP      | FTP control (vsftpd)            |
+| 40000–40100   | TCP      | FTP passive data                |
+
+All other ports are blocked by UFW. SSH is additionally protected by Fail2ban
+rate limiting.
+
+### Internal Services
+
+| Service         | Bind address       | Notes                              |
+|-----------------|--------------------|------------------------------------|
+| Node Exporter   | `127.0.0.1:9100`   | Prometheus metrics, not public     |
+| fcgiwrap        | Unix socket        | CGI execution for tilde sites      |
+| molly-brown     | `0.0.0.0:1965`     | Gemini TLS server                  |
+| Gophernicus     | `0.0.0.0:70`       | Gopher server                      |
+| efingerd        | systemd socket     | Finger protocol, socket-activated  |
+
+## Tilde Web Architecture
+
+Each user's `~/public_html/` is served at `https://atl.sh/~username/` via nginx.
+
+```
+nginx (443)
+  └── location ~ ^/~([^/]+)
+        root /home/$1/public_html
+        fcgiwrap for *.cgi, *.pl, *.py scripts
+        sub_filter </body> → webring widget injection
+```
+
+CGI scripts in `public_html/` execute as the user's UID via fcgiwrap with
+suexec-style per-user wrappers.
+
+The webring lives at `/var/www/html/ring/`:
+
+- `go.cgi` — Python CGI for next/prev/random navigation
+- `members.json` — generated every 15 minutes by a cron job scanning `~/.ring` files
+- `widget.js` — auto-injected into all tilde pages via nginx `sub_filter`
+
+## Environments
+
+Three environments share the same Ansible playbook and roles:
+
+| Environment | Infrastructure                  | Purpose                              |
+|-------------|----------------------------------|--------------------------------------|
+| `dev`       | Local Vagrant VM                 | Ansible development and testing      |
+| `staging`   | Hetzner Cloud VPS (Terraform)    | Pre-production validation            |
+| `prod`      | Hetzner dedicated (bare-metal)   | Live production system               |
+
+All three run Debian 13 (Trixie) and use the full playbook including security
+hardening and quotas, so dev closely mirrors production. See
+[Local Development](testing) for dev environment setup.
