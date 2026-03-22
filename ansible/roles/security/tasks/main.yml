@@ -20,11 +20,11 @@
 - name: Import fail2ban tasks
   ansible.builtin.import_tasks: fail2ban.yml
 
-- name: Import audit hardening
-  ansible.builtin.import_tasks: audit-hardening.yml
-
 - name: Import auditd setup
   ansible.builtin.import_tasks: auditd.yml
+
+- name: Import audit hardening
+  ansible.builtin.import_tasks: audit-hardening.yml
 
 - name: Import journald hardening
   ansible.builtin.import_tasks: journald-hardening.yml
