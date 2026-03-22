@@ -107,3 +107,23 @@ lint:
 # Edit Ansible vault (secrets)
 vault-edit:
     ansible-vault edit ansible/inventory/group_vars/all/vault.yml
+
+# Run full molecule test lifecycle for a role (create → converge → verify → destroy)
+molecule-test role:
+    cd ansible/roles/{{ role }} && uv run molecule test
+
+# Run molecule converge only (applies the role, keeps instance running)
+molecule-converge role:
+    cd ansible/roles/{{ role }} && uv run molecule converge
+
+# Run molecule verify only (runs verify.yml against existing instance)
+molecule-verify role:
+    cd ansible/roles/{{ role }} && uv run molecule verify
+
+# Destroy molecule instance for a role
+molecule-destroy role:
+    cd ansible/roles/{{ role }} && uv run molecule destroy
+
+# SSH into molecule instance for a role
+molecule-login role:
+    cd ansible/roles/{{ role }} && uv run molecule login
