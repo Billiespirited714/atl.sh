@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  become: true
+
+  vars:
+    pubnix_domain: atl.sh
+    user_cpu_quota: "200%"
+    user_memory_max: 1.5G
+    user_tasks_max: 200
+    quota_soft: 5G
+    quota_hard: 6G
+
+  roles:
+    - role: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
