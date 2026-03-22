@@ -33,3 +33,5 @@ docs/.wrangler/
 *.swp
 *.swo
 *~
+
+.ssh/
