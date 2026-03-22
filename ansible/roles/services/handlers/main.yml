@@ -18,3 +18,9 @@
   ansible.builtin.systemd:
     name: gophernicus.socket
     state: restarted
+
+- name: Restart finger
+  ansible.builtin.systemd:
+    name: finger.socket
+    state: restarted
+    daemon_reload: true
